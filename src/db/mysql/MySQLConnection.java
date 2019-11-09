@@ -14,11 +14,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Save search results to data base. Class will be called and returned in
+ * DBConnectionFactory
+ */
 public class MySQLConnection implements DBConnection {
-	/*
-	 * Save search results to data base. Class will be called and returned in
-	 * DBConnectionFactory
-	 */
 	private Connection conn;
 
 	public MySQLConnection() {
@@ -42,11 +43,11 @@ public class MySQLConnection implements DBConnection {
 		}
 	}
 
+	/**
+	 * By setting favorite items, add item into history table.
+	 */
 	@Override
 	public void setFavoriteItems(String userId, List<String> itemIds) {
-		/*
-		 * By setting favorite items, add item into history table.
-		 */
 		if (conn == null) {
 			System.err.println("DB connection failed");
 			return;
@@ -65,11 +66,12 @@ public class MySQLConnection implements DBConnection {
 		}
 	}
 
+	
+	/**
+	 * By unsetting favorite items, remove item from history table.
+	 */
 	@Override
 	public void unsetFavoriteItems(String userId, List<String> itemIds) {
-		/*
-		 * By unsetting favorite items, remove item from history table.
-		 */
 		if (conn == null) {
 			System.err.println("DB connection failed");
 			return;
@@ -90,11 +92,12 @@ public class MySQLConnection implements DBConnection {
 
 	}
 
+	/**
+	 * Get the list of the IDs of favorite items from database by userId.
+	 */
 	@Override
 	public Set<String> getFavoriteItemIds(String userId) {
-		/*
-		 * Get the list of the IDs of favorite items from database by userId.
-		 */
+
 		if (conn == null) {
 			return new HashSet<>();
 		}
@@ -119,11 +122,11 @@ public class MySQLConnection implements DBConnection {
 		return favoriteItems;
 	}
 
+	/**
+	 * Get the list of favorite items from database by userId.
+	 */
 	@Override
 	public Set<Item> getFavoriteItems(String userId) {
-		/*
-		 * Get the list of favorite items from database by userId.
-		 */
 		if (conn == null) {
 			return new HashSet<>();
 		}
@@ -182,12 +185,11 @@ public class MySQLConnection implements DBConnection {
 		return categories;
 	}
 
+	/**
+	 * Search items basing on latitude, longitude and term Save items after searching
+	 */
 	@Override
 	public List<Item> searchItems(double lat, double lon, String term) {
-		/*
-		 * Search items basing on latitude, longitude and term Save items after
-		 * searching
-		 */
 		TicketMasterClient ticketMasterClient = new TicketMasterClient();
 		List<Item> items = ticketMasterClient.search(lat, lon, term);
 
@@ -198,11 +200,11 @@ public class MySQLConnection implements DBConnection {
 		return items;
 	}
 
+	/**
+	 * Save Item information into items and categories table in database after searching
+	 */
 	@Override
 	public void saveItem(Item item) {
-		/*
-		 * Save Item information into items and categories table in database after searching
-		 */
 		if (conn == null) {
 			System.err.println("DB connection failed");
 			return;
@@ -220,7 +222,7 @@ public class MySQLConnection implements DBConnection {
 			ps.setString(6, item.getUrl());
 			ps.setDouble(7, item.getDistance());
 			ps.execute();
-			
+
 			// Save item into categories table.
 			sql = "INSERT IGNORE INTO categories VALUES(?, ?)";
 			ps = conn.prepareStatement(sql);
@@ -248,4 +250,28 @@ public class MySQLConnection implements DBConnection {
 		return false;
 	}
 
+	/**
+	 * Single user registration basing on userId, password, fist name and last name.
+	 */
+	@Override
+	public boolean registerUser(String userId, String password, String firstname, String lastname) {
+		if (conn == null) {
+			System.err.println("DB connection failed");
+			return false;
+		}
+
+		try {
+			String sql = "INSERT IGNORE INTO users VALUES (?, ?, ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, userId);
+			ps.setString(2, password);
+			ps.setString(3, firstname);
+			ps.setString(4, lastname);
+
+			return ps.executeUpdate() == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

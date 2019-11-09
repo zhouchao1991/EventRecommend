@@ -8,7 +8,7 @@ import entity.Item;
 
 public interface DBConnection {
 	/**
-	 * Close the connection.
+	 * Close the database connection.
 	 */
 	public void close();
 
@@ -29,7 +29,7 @@ public interface DBConnection {
 	public void unsetFavoriteItems(String userId, List<String> itemIds);
 
 	/**
-	 * Get the favorite item id for a user.
+	 * Get the favorite item ID for a user.
 	 * 
 	 * @param userId
 	 * @return itemIds
@@ -45,7 +45,7 @@ public interface DBConnection {
 	public Set<Item> getFavoriteItems(String userId);
 
 	/**
-	 * Gets categories based on item id
+	 * Gets categories based on item ID
 	 * 
 	 * @param itemId
 	 * @return set of categories
@@ -53,7 +53,7 @@ public interface DBConnection {
 	public Set<String> getCategories(String itemId);
 
 	/**
-	 * Search items near a geolocation and a term (optional).
+	 * Search items near a geographical location and an optional term.
 	 * 
 	 * @param userId
 	 * @param lat
@@ -72,8 +72,7 @@ public interface DBConnection {
 	public void saveItem(Item item);
 
 	/**
-	 * Get full name of a user. (This is not needed for main course, just for demo
-	 * and extension).
+	 * Get full name of a user. Designed for extension.
 	 * 
 	 * @param userId
 	 * @return full name of the user
@@ -81,12 +80,22 @@ public interface DBConnection {
 	public String getFullname(String userId);
 
 	/**
-	 * Return whether the credential is correct. (This is not needed for main
-	 * course, just for demo and extension)
+	 * Return whether the credential is correct. Designed for extension.
 	 * 
 	 * @param userId
 	 * @param password
 	 * @return boolean
 	 */
 	public boolean verifyLogin(String userId, String password);
+	
+	/**
+	 * Single User Demonstration
+	 * 
+	 * @param userId
+	 * @param password
+	 * @param firstname
+	 * @param lastname
+	 * @return boolean
+	 */
+	public boolean registerUser(String userId, String password, String firstname, String lastname);
 }
