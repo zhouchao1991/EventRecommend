@@ -5,7 +5,10 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 public class MySQLTableCreation {
-	// Run this as Java application to reset db schema.
+	/*
+	 * Reset database schema, run as Java application.
+	 */
+
 	public static void main(String[] args) {
 		try {
 			// Connect to MySQL.
@@ -69,6 +72,11 @@ public class MySQLTableCreation {
 					+ "FOREIGN KEY (user_id) REFERENCES users(user_id),"
 					+ "FOREIGN KEY (item_id) REFERENCES items(item_id)"
 					+ ")";
+			statement.executeUpdate(sql);
+			
+			// Create testing user 1111/1234/81dc9bdb52d04dc20036dbd8313ed055
+			sql = "INSERT INTO users VALUES('1111', '81dc9bdb52d04dc20036dbd8313ed055', 'Chao', 'Zhou')";
+						
 			statement.executeUpdate(sql);
 			
 			conn.close();

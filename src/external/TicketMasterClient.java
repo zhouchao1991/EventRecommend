@@ -26,23 +26,26 @@ public class TicketMasterClient {
 	private static final String DEFAULT_KEYWORD = "event";
 	private static final int DEFAULT_RADIUS = 50;
 	private static final String API_KEY = "KGVsrMm4KJivRp0wDsdixBzrTeyCNf8O";
-	
-	// Return a list of Item instead of original JSONObject
+
 	public List<Item> search(double lat, double lon, String keyword) {
-		// Search events basing on longitude and latitude.
+		/*
+		 * Search events basing on longitude and latitude. Return a list of Item instead
+		 * of original JSONObject
+		 */
 		if (keyword == null) {
 			keyword = DEFAULT_KEYWORD; // Default is "event"
 		}
 		try {
-			keyword = URLEncoder.encode(keyword, "UTF-8");  // encode basing on UTF-8
+			keyword = URLEncoder.encode(keyword, "UTF-8"); // encode basing on UTF-8
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
 		// Use geoHash to request for event information
 		String geoHash = GeoHash.encodeGeohash(lat, lon, 8);
-		String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword, DEFAULT_RADIUS);
-		
+		String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword,
+				DEFAULT_RADIUS);
+
 		// Old version of requesting information using latitude and longitude
 //		String query = String.format("apikey=%s&latlong=%s,%s&keyword=%s&radius=%s", API_KEY, lat, lon, keyword, DEFAULT_RADIUS);
 		String url = HOST + PATH + "?" + query;
@@ -62,7 +65,7 @@ public class TicketMasterClient {
 			System.out.println("Sending requets to url: " + url);
 			System.out.println("Response code: " + responseCode);
 
-			if (responseCode != 200) { 
+			if (responseCode != 200) {
 				return new ArrayList<>();
 			}
 
@@ -93,14 +96,14 @@ public class TicketMasterClient {
 
 		return new ArrayList<>();
 	}
-	
+
 	// Convert JSONArray to a list of item objects.
 	// Clean up the data from TicketMaster .
 	private List<Item> getItemList(JSONArray events) throws JSONException {
 		List<Item> itemList = new ArrayList<>();
 		for (int i = 0; i < events.length(); ++i) {
 			JSONObject event = events.getJSONObject(i);
-			
+
 			ItemBuilder builder = new ItemBuilder();
 			// Use ItemBuilder to build the Item
 			if (!event.isNull("id")) {
@@ -115,19 +118,19 @@ public class TicketMasterClient {
 			if (!event.isNull("distance")) {
 				builder.setDistance(event.getDouble("distance"));
 			}
-			
+
 			builder.setAddress(getAddress(event));
 			builder.setCategories(getCategories(event));
 			builder.setImageUrl(getImageUrl(event));
-			
+
 			itemList.add(builder.build());
 		}
 		return itemList;
 	}
-	
+
 	/**
-	 * Helper methods to get the address.
-	 * Expand the original json object and save the information we want.
+	 * Helper methods to get the address. Expand the original json object and save
+	 * the information we want.
 	 */
 	private String getAddress(JSONObject event) throws JSONException {
 		if (!event.isNull("_embedded")) {
@@ -142,24 +145,24 @@ public class TicketMasterClient {
 						if (!address.isNull("line1")) {
 							builder.append(address.getString("line1"));
 						}
-						
+
 						if (!address.isNull("line2")) {
 							builder.append(",");
 							builder.append(address.getString("line2"));
 						}
-						
+
 						if (!address.isNull("line3")) {
 							builder.append(",");
 							builder.append(address.getString("line3"));
 						}
 					}
-					
+
 					if (!venue.isNull("city")) {
 						JSONObject city = venue.getJSONObject("city");
 						builder.append(",");
 						builder.append(city.getString("name"));
 					}
-					
+
 					String result = builder.toString();
 					if (!result.isEmpty()) {
 						return result;
@@ -167,7 +170,7 @@ public class TicketMasterClient {
 				}
 			}
 		}
-		return "";	
+		return "";
 	}
 
 	/**
@@ -186,12 +189,11 @@ public class TicketMasterClient {
 		return "";
 	}
 
-	
 	/**
-	 * Helper methods to get the categories of events
-	 * There may be multiple categories, return a set of them.
+	 * Helper methods to get the categories of events There may be multiple
+	 * categories, return a set of them.
 	 */
-	private Set<String> getCategories(JSONObject event) throws JSONException {		
+	private Set<String> getCategories(JSONObject event) throws JSONException {
 		Set<String> categories = new HashSet<>();
 		if (!event.isNull("classifications")) {
 			JSONArray classifications = event.getJSONArray("classifications");
@@ -208,7 +210,6 @@ public class TicketMasterClient {
 		return categories;
 	}
 
-
 	/**
 	 * Main entry to test TicketMasterClient.
 	 */
@@ -220,5 +221,5 @@ public class TicketMasterClient {
 			System.out.println(event.toJSONObject());
 		}
 	}
-	
+
 }
