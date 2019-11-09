@@ -18,7 +18,7 @@ import recommendation.GeoRecommendation;
 /**
  * Servlet implementation class RecommendItem
  */
-@WebServlet("/recommend")
+@WebServlet("/recommendation")
 public class RecommendItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
