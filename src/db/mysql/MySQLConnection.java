@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Save search results to data base. Class will be called and returned in
+ * Save search results to database. Class will be called and returned in
  * DBConnectionFactory
  */
 public class MySQLConnection implements DBConnection {
@@ -91,7 +91,7 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	/**
-	 * Get the list of the IDs of favorite items from database by userId.
+	 * Get the list of the itemIds of favorite items from database by userId.
 	 */
 	@Override
 	public Set<String> getFavoriteItemIds(String userId) {
@@ -162,6 +162,9 @@ public class MySQLConnection implements DBConnection {
 		return favoriteItems;
 	}
 
+	/**
+	 * Get the categories of items from database by itemId.
+	 */
 	@Override
 	public Set<String> getCategories(String itemId) {
 		if (conn == null) {
@@ -239,7 +242,7 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	/**
-	 * Get the full name of the user basing on user ID.
+	 * Get the full name of the user basing on userId.
 	 */
 	@Override
 	public String getFullname(String userId) {

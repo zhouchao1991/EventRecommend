@@ -2,8 +2,11 @@ package db;
 
 import db.mysql.MySQLConnection;
 
+/**
+ * Factory method for future extension to MongoDB
+ */
 public class DBConnectionFactory {
-	// This should change based on the pipeline.
+	
 	private static final String DEFAULT_DB = "mysql";
 
 	public static DBConnection getConnection(String db) {

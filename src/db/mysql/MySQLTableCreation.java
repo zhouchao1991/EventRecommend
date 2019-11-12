@@ -5,10 +5,10 @@ import java.sql.Statement;
 import java.sql.Connection;
 
 public class MySQLTableCreation {
-	/*
+	
+	/**
 	 * Reset database schema, run as Java application.
 	 */
-
 	public static void main(String[] args) {
 		try {
 			// Connect to MySQL.

@@ -53,15 +53,6 @@ public class SearchItem extends HttpServlet {
 		double lon = Double.parseDouble(request.getParameter("lon"));
 		String userId = session.getAttribute("user_id").toString();
 
-//      //Testing code for TicketMaster API and JSON formatting.
-//		TicketMasterClient client = new TicketMasterClient();
-//		List<Item> items = client.search(lat, lon, null);
-//		JSONArray array = new JSONArray();
-//		for (Item item : items) {
-//			array.put(item.toJSONObject());
-//		}
-//		RpcHelper.writeJsonArray(response, array);
-
 		String term = request.getParameter("term");
 		DBConnection connection = DBConnectionFactory.getConnection(); // Use default MySQL database
 		try {
@@ -71,7 +62,6 @@ public class SearchItem extends HttpServlet {
 
 			JSONArray array = new JSONArray();
 			for (Item item : items) {
-				// array.put(item.toJSONObject());
 				// Integrate information of favorite history into JSON object.
 				JSONObject obj = item.toJSONObject();
 				obj.put("favorite", favoritedItemIds.contains(item.getItemId()));

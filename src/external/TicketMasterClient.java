@@ -25,12 +25,12 @@ public class TicketMasterClient {
 	private static final String PATH = "/discovery/v2/events.json";
 	private static final String DEFAULT_KEYWORD = "event";
 	private static final int DEFAULT_RADIUS = 50;
-	private static final String API_KEY = "KGVsrMm4KJivRp0wDsdixBzrTeyCNf8O";
+	private static final String API_KEY = "****"; // Change it to your own API key
 
 	public List<Item> search(double lat, double lon, String keyword) {
-		/*
+		/**
 		 * Search events basing on longitude and latitude. Return a list of Item instead
-		 * of original JSONObject
+		 * of original JSONObjectS
 		 */
 		if (keyword == null) {
 			keyword = DEFAULT_KEYWORD; // Default is "event"
@@ -46,8 +46,6 @@ public class TicketMasterClient {
 		String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword,
 				DEFAULT_RADIUS);
 
-		// Old version of requesting information using latitude and longitude
-//		String query = String.format("apikey=%s&latlong=%s,%s&keyword=%s&radius=%s", API_KEY, lat, lon, keyword, DEFAULT_RADIUS);
 		String url = HOST + PATH + "?" + query;
 		StringBuilder responseBody = new StringBuilder();
 		try {
@@ -97,8 +95,10 @@ public class TicketMasterClient {
 		return new ArrayList<>();
 	}
 
-	// Convert JSONArray to a list of item objects.
-	// Clean up the data from TicketMaster .
+	/**
+	 *  Convert JSONArray to a list of item objects.
+	 *  Clean up the data from TicketMaster .
+	 */
 	private List<Item> getItemList(JSONArray events) throws JSONException {
 		List<Item> itemList = new ArrayList<>();
 		for (int i = 0; i < events.length(); ++i) {

@@ -1,9 +1,9 @@
 package external;
 
-/*
- *  TicketMaster updates their API and prefers to receives geohash instead of latitude and longitude
+/**
+ * Helper function for transforming latitude and longitude to geohash.
+ * TicketMaster updates their API and prefers to receives geohash instead of latitude and longitude
  */
-
 public class GeoHash {
 
     private static final String BASE_32 = "0123456789bcdefghjkmnpqrstuvwxyz";

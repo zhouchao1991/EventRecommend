@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Definition of item class.
+ */
 public class Item {
 	private String itemId;
 	private String name;
@@ -73,7 +76,7 @@ public class Item {
 	}
 
 	
-	/*
+	/**
 	 * Builder pattern
 	 */
 	public static class ItemBuilder {
